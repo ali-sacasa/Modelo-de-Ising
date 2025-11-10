@@ -24,6 +24,8 @@ def hamiltoniano(N, J, g, PZ, PX, I):
     PZ = la matriz de pauli en la componente Z
     PX = la matriz de pauli en la componente X
     I = matriz identidad
+    
+    
     """
     dim = 2**N
     
@@ -60,5 +62,11 @@ def hamiltoniano(N, J, g, PZ, PX, I):
                 eleTras = np.kron(eleTras, I)
         H += -g*eleTras   
     
+    if H.shape == (dim, dim):
+        print("yei :)")
+    
+
     return H
 
+
+hamiltoniano(3,1,1,pauliZ,pauliX, ideMatrix)
