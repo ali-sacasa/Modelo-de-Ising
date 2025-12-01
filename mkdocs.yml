@@ -1,0 +1,7 @@
+site_name: Modelo de Ising
+repo_url: https://example.com
+nav:
+  - Inicio: index.md
+  - Uso: usage.md
+theme:
+  name: mkdocs
