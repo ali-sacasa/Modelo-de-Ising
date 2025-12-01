@@ -81,15 +81,11 @@
             
             <li class="nav-item" data-bs-level="1"><a href="#uso-del-proyecto" class="nav-link">Uso del proyecto</a>
               <ul class="nav flex-column">
-            <li class="nav-item" data-bs-level="2"><a href="#1-preparar-dependencias" class="nav-link">1. Preparar dependencias</a>
+            <li class="nav-item" data-bs-level="2"><a href="#1-ejecutar-la-simulacion-y-graficar" class="nav-link">1. Ejecutar la simulación y graficar</a>
               <ul class="nav flex-column">
               </ul>
             </li>
-            <li class="nav-item" data-bs-level="2"><a href="#2-ejecutar-la-simulacion-y-graficar" class="nav-link">2. Ejecutar la simulación y graficar</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
-            <li class="nav-item" data-bs-level="2"><a href="#3-servir-la-documentacion-con-mkdocs" class="nav-link">3. Servir la documentación con MkDocs</a>
+            <li class="nav-item" data-bs-level="2"><a href="#2-servir-la-documentacion-con-mkdocs" class="nav-link">2. Servir la documentación con MkDocs</a>
               <ul class="nav flex-column">
               </ul>
             </li>
@@ -101,13 +97,8 @@
                     <div class="col-md-9" role="main">
 
 <h1 id="uso-del-proyecto">Uso del proyecto</h1>
-<h2 id="1-preparar-dependencias">1. Preparar dependencias</h2>
-<ul>
-<li>C++17: asegúrate de tener <code>g++</code> o un compilador compatible.</li>
-<li>Python: <code>python3 -m pip install matplotlib</code>.</li>
-</ul>
-<h2 id="2-ejecutar-la-simulacion-y-graficar">2. Ejecutar la simulación y graficar</h2>
-<p>Desde la raíz del repo:</p>
+<h2 id="1-ejecutar-la-simulacion-y-graficar">1. Ejecutar la simulación y graficar</h2>
+<p>Desde el directorio principal del repositorio:</p>
 <pre><code class="language-bash">cd solver_C++
 ./run_solver.sh
 </code></pre>
@@ -118,10 +109,10 @@
 <p>Para cambiar el directorio de salida:</p>
 <pre><code class="language-bash">./run_solver.sh otra_carpeta
 </code></pre>
-<p>Si solo quieres guardar la figura sin mostrar ventana:</p>
+<p>Para guardar la figura sin abrir una ventana gráfica:</p>
 <pre><code class="language-bash">python3 plot_results.py --data-dir outputs --no-show
 </code></pre>
-<h2 id="3-servir-la-documentacion-con-mkdocs">3. Servir la documentación con MkDocs</h2>
+<h2 id="2-servir-la-documentacion-con-mkdocs">2. Servir la documentación con MkDocs</h2>
 <p>Instala MkDocs (si no lo tienes):</p>
 <pre><code class="language-bash">python3 -m pip install mkdocs
 </code></pre>
