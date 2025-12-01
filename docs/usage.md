@@ -1,11 +1,7 @@
 # Uso del proyecto
 
-## 1. Preparar dependencias
-- C++17: asegúrate de tener `g++` o un compilador compatible.
-- Python: `python3 -m pip install matplotlib`.
-
-## 2. Ejecutar la simulación y graficar
-Desde la raíz del repo:
+## 1. Ejecutar la simulación y graficar
+Desde el directorio principal del repositorio:
 ```bash
 cd solver_C++
 ./run_solver.sh
@@ -20,12 +16,12 @@ Para cambiar el directorio de salida:
 ./run_solver.sh otra_carpeta
 ```
 
-Si solo quieres guardar la figura sin mostrar ventana:
+Para guardar la figura sin abrir una ventana gráfica:
 ```bash
 python3 plot_results.py --data-dir outputs --no-show
 ```
 
-## 3. Servir la documentación con MkDocs
+## 2. Servir la documentación con MkDocs
 Instala MkDocs (si no lo tienes):
 ```bash
 python3 -m pip install mkdocs
