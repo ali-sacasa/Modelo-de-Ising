@@ -1,8 +1,5 @@
 site_name: Modelo de Ising
-repo_url: https://example.com
-nav:
-  - Inicio: index.md
-  - Uso: usage.md
+repo_url: https://github.com/ali-sacasa/Modelo-de-Ising/
 theme:
   name: mkdocs
   features: 
@@ -23,17 +20,23 @@ theme:
 markdown_extensions:
   - admonition
   - codehilite
-  - toc:    
+  - toc:
       permalink: true
   - pymdownx.superfences
   - pymdownx.tabbed
   - pymdownx.details
   - pymdownx.highlight
-  - pymdownx.inlinehilite   
+  - pymdownx.inlinehilite
   - pymdownx.magiclink
   - pymdownx.betterem:
-      smart_enable: all     
-  - pymdownx.caret      
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.arithmatex:
+      generic: true
+
+extra_javascript:
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
 
 nav:
   - Inicio: index.md
@@ -60,4 +63,4 @@ nav:
 
 plugins:  
   - search
-  - mkdocs_macros   
+  - macros

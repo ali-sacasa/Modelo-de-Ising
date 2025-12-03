@@ -1,6 +1,6 @@
 # Módulos en C++
 
-La implementación principal está en C++17 y se apoya en Eigen para computar cálculos de álgebra lineal. El código se divide en tres archivos, siguiendo el estándar para el paradigma de OOP:
+La implementación en C++17 es el camino nativo y de alto rendimiento del proyecto, pero replica la misma lógica física y numérica del solver en Python. Se apoya en Eigen para álgebra lineal y se organiza en tres archivos:
 - `hpp_Solver_D.E.s.hpp`: definiciones de tipos, clases y constantes.
 - `Cpp_Solver_D.E.s.cpp`: implementación de todos los módulos numéricos.
 - `Main_C++_Solver_D.E.s.cpp`: configuración, ejecución y guardado de resultados.
@@ -26,12 +26,12 @@ La implementación principal está en C++17 y se apoya en Eigen para computar c�
 - Calcula la matriz de Gram (`compute_gram_matrix`) y construye un proyector ortonormal truncado(`build_projection_from_gram`).
 
 ### `RicciFlow`
-- Usa pesos térmicos $$e^{-\beta H}$$ para deformar la proyección hacia estados de baja energía (`get_thermal_weights`).
+- Usa pesos térmicos $e^{-\beta H}$ para deformar la proyección hacia estados de baja energía (`get_thermal_weights`).
 - Construye proyecciones ponderadas (`build_weighted_projection`) y evalúa la fidelidad con el estado inicial (`calculate_fidelity`).
 - `optimize_projection` analiza una lista de betas, guarda la mejor proyección, el Hamiltoniano efectivo y las fidelidades, y exporta los resultados con `save_results_csv`.
 
 ### `ChebyshevPropagator`
-- Reescala el Hamiltoniano y calcula coeficientes de Chebyshev para aproximar $$e^{-iHt}$$.
+- Reescala el Hamiltoniano y calcula coeficientes de Chebyshev para aproximar $e^{-iHt}$.
 - `evolve` aplica la expansión a un estado dado. El `project_and_evolve` evoluciona en paralelo el estado proyectado y el completo y devuelve ambas series de estados.
 
 ### `EnergyAnalyzer`
@@ -46,8 +46,9 @@ La implementación principal está en C++17 y se apoya en Eigen para computar c�
 - Guardado específico de resultados de energía (`save_energy_results_csv`) y magnetización (`save_magnetization_csv`).
 
 ## Flujo por pasos (véase `Main_C++_Solver_D.E.s.cpp`)
-1. Configura los parámetros físicos y numéricos (`SystemConfig`)  y construye el Hamiltoniano (componentes ZZ y X).
+1. Configura los parámetros físicos y numéricos (`SystemConfig`) y construye el Hamiltoniano (componentes ZZ y X).
 2. Muestrea estados coherentes, arma la matriz de datos y ejecuta el flujo de Ricci para obtener el mejor proyector y Hamiltoniano efectivo.
 3. Evoluciona el estado inicial en el subespacio proyectado y en el espacio completo mediante `ChebyshevPropagator`.
 4. Calcula energías, magnetización, densidades locales, fidelidad y varianzas con `EnergyAnalyzer`.
 5. Exporta todos los resultados en CSV con `CSVExporter` y reporta cálculos de errores.
+La intención es que estos pasos y observables sean equivalentes a los del notebook en Python, facilitando comparar rendimiento y precisión entre ambos caminos.

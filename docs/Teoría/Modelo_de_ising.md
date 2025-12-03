@@ -12,19 +12,19 @@ $$
 \sigma_i = \pm 1
 $$
 
-ubicados en los vértices de una malla de $$N$$ dimensiones. El Hamiltoniano clásico es
+ubicados en los vértices de una malla de $N$ dimensiones. El Hamiltoniano clásico es
 
 $$
 H = -J \sum_{\langle i,j \rangle} \sigma_i \sigma_j - h \sum_i \sigma_i
 $$
 
-donde $$J$$ es el acoplamiento, $$h$$ es el campo externo y $$\langle i,j \rangle$$ denota pares vecinos.
+donde $J$ es el acoplamiento, $h$ es el campo externo y $\langle i,j \rangle$ denota pares vecinos.
 
 ---
 
 ## 2. Significado físico
 
-Si $$J>0$$, los espines tienden a alinearse, como ocurre en el fenómeno de ferromagnetismo, si $$J<0$$ prefieren anti-alinearse, lo que refleja antiferromagnetismo. El campo $$h$$ busca orientar todos los espines en un mismo sentido, compitiendo con las interacciones internas.
+Si $J>0$, los espines tienden a alinearse, como ocurre en el fenómeno de ferromagnetismo, si $J<0$ prefieren anti-alinearse, lo que refleja antiferromagnetismo. El campo $h$ busca orientar todos los espines en un mismo sentido, compitiendo con las interacciones internas.
 
 ---
 
@@ -32,7 +32,7 @@ Si $$J>0$$, los espines tienden a alinearse, como ocurre en el fenómeno de ferr
 
 ### 3.1. Configuraciones como Vértices de un Hipercubo
 
-Para $$N$$ espines, el espacio de configuraciones forma un hipercubo de dimensión $$N$$. El modelo estudia cómo la energía define un paisaje sobre ese hipercubo, generando regiones de baja y alta energía.
+Para $N$ espines, el espacio de configuraciones forma un hipercubo de dimensión $N$. El modelo estudia cómo la energía define un paisaje sobre ese hipercubo, generando regiones de baja y alta energía.
 
 ### 3.2. Curvatura Discreta
 
@@ -48,7 +48,7 @@ favorece las configuraciones alineadas. Los bordes entre espines distintos actú
 
 ## 4. Significado termodinámico
 
-A una temperatura $$T$$ cada configuración tiene peso
+A una temperatura $T$ cada configuración tiene peso
 
 $$
 P(\sigma) = \frac{1}{Z} e^{-\beta E(\sigma)}, \qquad \beta = \frac{1}{k_B T}.
@@ -68,11 +68,11 @@ $$
 M = \frac{1}{N}\sum_i \sigma_i
 $$
 
-tiende a cero en el límite termodinámico cuando $$T>0$$.
+tiende a cero en el límite termodinámico cuando $T>0$.
 
 ### 5.2. Ising en 2D (sin campo)
 
-Existe una transición de fase a temperatura crítica $$T_c$$. Para $$T < T_c$$ y $$M \neq 0$$ (orden ferromagnético), para $$T > T_c$$ y $$M = 0$$ (desorden). La transición se refleja en el cambio de geometría de las interfaces entre dominios.
+Existe una transición de fase a temperatura crítica $T_c$. Para $T < T_c$ y $M \neq 0$ (orden ferromagnético), para $T > T_c$ y $M = 0$ (desorden). La transición se refleja en el cambio de geometría de las interfaces entre dominios.
 
 ---
 
