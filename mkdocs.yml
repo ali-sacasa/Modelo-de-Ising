@@ -40,22 +40,22 @@ nav:
   - Uso: usage.md
 
   - Teoría:
-    - Modelo de Ising: Modelo_de_ising.md
-    - Enfoque de resolución propuesto: Enfoque_de_resolución_propuesto.md
+    - Modelo de Ising: Teoría/Modelo_de_ising.md
+    - Enfoque de resolución propuesto: Teoría/Enfoque_de_resolución_propuesto.md
 
 
   - Código:
-    - Módulos en Python: Modulos_Python.md
-    - Módulos en C++: Modulos_C++.md
-    - Implementación Paralelizada en Python: Implementación_del_modelo_de_Ising.md
-    - Implementación Paralelizada en C++: Implementación_en_C++.md
+    - Módulos en Python: Código/Módulos_Python.md
+    - Módulos en C++: Código/Módulos_C++.md
+    - Implementación Paralelizada en Python: Código/Implementación_paralelizada_Python.md
+    - Implementación Paralelizada en C++: Código/Implementación_paralelizada_C++.md
 
   - Resultados, discusión y conclusiones:
-    - Resultados: Resultados.md
-    - Discusión: Discusion.md
-    - Conclusiones: Conclusiones.md
+    - Resultados: Resultados, discusión y conclusiones/Resultados.md
+    - Discusión: Resultados, discusión y conclusiones/Discusion.md
+    - Conclusiones: Resultados, discusión y conclusiones/Conclusiones.md
 
-  - Referencias: referencias.md
+  - Referencias: Referencias/referencias.md
     
 
 plugins:  
