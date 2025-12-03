@@ -125,7 +125,7 @@ Geométricamente, la transición corresponde a que las líneas de frontera entre
 
 # 6. Conexión con Dinámica Estocástica
 
-El modelo usual se dinamiza con:
+El modelo usual se dinamiza con
 
 * dinámica de Glauber
 * dinámica de Kawasaki
@@ -137,8 +137,7 @@ Estas corresponden geométricamente a:
 
 ---
 
-# 7. Conexión con el Modelo Cuántico (Contexto para tus notas)
-
+# 7. Modelo Cuántico
 El modelo de Ising clásico es el punto de partida para sus extensiones cuánticas:
 [
 H_Q = -J\sum_i \sigma_i^z \sigma_{i+1}^z - g \sum_i \sigma_i^x.
@@ -153,9 +152,8 @@ La parte clásica es exactamente la primera suma con (\sigma_i^z\sigma_{i+1}^z).
 
 ---
 
-# 8. Resumen Intuitivo
 
-El modelo de Ising clásico describe:
+El modelo de Ising clásico describe
 
 * espines que quieren alinearse,
 * geometría de interfaces y dominios,
@@ -163,6 +161,3 @@ El modelo de Ising clásico describe:
 * una transición de fase en 2D,
 * un paisaje energético sobre un hipercubo.
 
-Es la base geométrica, estadística y física del modelo cuántico que estás desarrollando.
-
----
