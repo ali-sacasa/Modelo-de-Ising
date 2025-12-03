@@ -44,11 +44,12 @@ nav:
     - Enfoque de resolución propuesto: Enfoque_de_resolución_propuesto.md
 
 
-  . Código:
+  - Código:
     - Módulos en Python: Modulos_Python.md
     - Módulos en C++: Modulos_C++.md
     - Implementación Paralelizada en Python: Implementación_del_modelo_de_Ising.md
     - Implementación Paralelizada en C++: Implementación_en_C++.md
+
   - Resultados, discusión y conclusiones:
     - Resultados: Resultados.md
     - Discusión: Discusion.md
