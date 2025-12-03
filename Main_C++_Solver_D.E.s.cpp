@@ -4,7 +4,7 @@
 #include <chrono>
 
 int main() {
-    std::cout << "=== SOLVER CUÁNTICO EN C++ - MODELO ISING ===" << std::endl;
+    std::cout << "C++ - MODELO ISING " << std::endl;
     
     // Configuración del sistema
     SystemConfig config;
