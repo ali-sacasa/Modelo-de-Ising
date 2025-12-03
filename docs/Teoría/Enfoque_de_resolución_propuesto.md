@@ -1,6 +1,6 @@
 # Resolución del Modelo de Ising mediante Proyección Holomorfa y Técnicas Numéricas
 
-Este documento presenta un enfoque físico-cuántico y computacional para simular modelos de Ising de muchos cuerpos mediante proyecciones holomorfas sobre estados coherentes, técnicas de reducción dimensional y aproximaciones numéricas avanzadas. La narrativa sigue la lógica de cómo podemos pasar de un espacio de Hilbert inabordable a un subespacio reducido que capture la dinámica física más relevante, mostrando a la vez la intuición geométrica y las herramientas computacionales que hacen posible esta simplificación.
+Este documento presenta un enfoque físico-cuántico y computacional para simular modelos de Ising de muchos cuerpos mediante proyecciones holomorfas sobre estados coherentes, técnicas de reducción dimensional y aproximaciones numéricas avanzadas. La narrativa sigue la lógica de cómo podemos pasar de un espacio de Hilbert inabordable a un subespacio reducido que capture la dinámica física más relevante, mostrando a la vez la intuición geométrica y las herramientas computacionales que hacen posible esta simplificación. Para mayores detalles, ver la documentación o archivo "Solver_D.E.s.ipynb".
 
 ---
 
