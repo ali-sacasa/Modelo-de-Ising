@@ -1,318 +1,131 @@
-# Enfoque geométrico y pedagógico para la resolución del modelo de Ising mediante proyección holomorfa
+# Resolución del Modelo de Ising mediante Proyección Holomorfa y Técnicas Numéricas
 
-Este documento presenta, de manera pedagógica y desde una perspectiva geométrica, el método de reducción dimensional basado en estados coherentes, variedades complejas y kernel de Bergman aplicado al modelo de Ising. El objetivo es que un lector con formación avanzada en física teórica o matemática pueda ver claramente la intuición geométrica detrás del procedimiento, más allá de la formulación algebraica.
-
----
-
-## 1. Espacio de Hilbert y motivación geométrica
-
-Un sistema de (N) espines posee un espacio de Hilbert
-
-[
-H = (\mathbb{C}^2)^{\otimes N}, \quad \dim H = 2^N.
-]
-
-Este espacio crece exponencialmente y se vuelve intratable para valores moderados de (N). La idea central es reemplazar el análisis en este espacio gigantesco por uno en un subespacio de dimensión mucho menor. Para ello utilizamos herramientas geométricas que permiten identificar "regiones" más relevantes del espacio de estados.
-
-Las ideas principales son:
-
-* Interpretar estados cuánticos como puntos de una variedad compleja proyectiva.
-* Construir estados coherentes como secciones holomorfas de un fibrado.
-* Seleccionar de manera geométrica un subespacio adecuado mediante proyecciones.
+Este documento presenta un enfoque físico-cuántico y computacional para simular modelos de Ising de muchos cuerpos mediante proyecciones holomorfas sobre estados coherentes, técnicas de reducción dimensional y aproximaciones numéricas avanzadas. La narrativa sigue la lógica de cómo podemos pasar de un espacio de Hilbert inabordable a un subespacio reducido que capture la dinámica física más relevante, mostrando a la vez la intuición geométrica y las herramientas computacionales que hacen posible esta simplificación.
 
 ---
 
-## 2. Geometría compleja: del espacio proyectivo al fibrado tautológico
+## 1. Espacio de Hilbert y Motivación
 
-### 2.1 Geometría de (\mathbb{C}P^1)
+Consideremos un sistema de $$N$$ espines. Su espacio de Hilbert está dado por
 
-El espacio proyectivo complejo (\mathbb{C}P^1) es esencialmente una **esfera** vista desde el punto de vista complejo. Cada punto representa una "dirección" compleja en (\mathbb{C}^2). Esta identificación permite describir estados de un espín como puntos en la superficie de Bloch.
+$$
+\mathcal{H} = (\mathbb{C}^2)^{\otimes N}, \quad \dim \mathcal{H} = 2^N,
+$$
 
-### 2.2 Fibrado tautológico y su dual
+lo que crece exponencialmente con $$N$$ y hace que el tratamiento directo sea impracticable para sistemas moderadamente grandes. La estrategia consiste en proyectar la dinámica sobre un subespacio mucho más pequeño, que capture los modos de baja energía o los estados de alta fidelidad con la configuración inicial. Para ello representamos los estados cuánticos mediante **estados coherentes** sobre $$\mathbb{C}P^1$$, de modo que cada espín individual se describe como
 
-El **fibrado tautológico** asigna a cada punto proyectivo la línea compleja que este representa. Su dual, (\mathcal{O}(1)), contiene secciones holomorfas que sirven como funciones "bien comportadas" en la variedad. Estas secciones son los objetos geométricos que utilizaremos para construir aproximaciones de baja dimensión.
+$$
+|z\rangle = \frac{1}{\sqrt{1+|z|^2}} 
+\begin{pmatrix} 1 \\ z \end{pmatrix}.
+$$
 
----
+Para $$N$$ espines, el estado global se construye como producto tensorial
 
-## 3. Estructura Kähler y métrica de Fubini–Study
+$$
+|Z\rangle = \bigotimes_{i=1}^N |z_i\rangle,
+$$
 
-La variedad (\mathbb{C}P^1) posee una estructura Kähler natural. La métrica de Fubini–Study se deriva del potencial
-
-[
-K(z,\bar z)=\log(1+|z|^2)
-]
-
-y describe distancias y ángulos en el espacio de estados. Esta métrica es fundamental porque:
-
-* cuantifica la curvatura del espacio de estados,
-* determina la fase geométrica (fase de Berry),
-* establece el marco para la cuantización geométrica.
-
-La forma de Kähler (\omega_{FS}) tiene un número de Chern igual a 1 cuando se integra sobre (\mathbb{C}P^1), lo que revela que el espacio de estados tiene una topología no trivial.
+generando un conjunto continuo de configuraciones que actúan como el “esqueleto” de la dinámica del sistema, capturando la esencia de los estados relevantes.
 
 ---
 
-## 4. Estados coherentes: el puente entre geometría y física
+## 2. Proyección Holomorfa y Subespacios Relevantes
 
-Podemos ver a los estados coherentes como "puntos" en (\mathbb{C}P^1) que se levantan al fibrado (\mathcal{O}(1)). Para un solo espín,
+Para identificar el subespacio que realmente importa, se construye una **matriz de correlación** a partir de un conjunto de configuraciones $$\{Z_j\}$$:
 
-[
-|z\rangle = \frac{1}{\sqrt{1+|z|^2}} (1, z)^T,
-]
+$$
+D[:,j] = |Z_j\rangle, \quad G = D^\dagger D.
+$$
 
-y estos estados:
+La diagonalización de $$G$$ permite encontrar las direcciones principales de variación en el espacio generado por los estados coherentes. Los vectores propios con los mayores valores propios forman una base ortonormal $$u_m$$ del subespacio de dimensión reducida $$M$$, y el proyector correspondiente se define como
 
-* están normalizados,
-* forman un sistema sobrecompleto,
-* permiten reconstruir la identidad integrando sobre (\mathbb{C}).
-
-Para (N) espines simplemente usamos productos tensoriales
-
-[
-|Z\rangle = \bigotimes_{i=1}^N |z_i\rangle.
-]
-
-Intuitivamente, esto significa que cada configuración (Z) de puntos en (\mathbb{C}P^1) corresponde a un estado cuántico "suavizado" que no concentra toda la información en una base fija, sino en una posición geométrica.
-
----
-
-## 5. Kernel de Bergman: una lupa holomorfa
-
-Para trabajar con funciones holomorfas en (\mathbb{C}P^1), utilizamos el espacio
-
-[
-H_k = \mathrm{span}{1,z,z^2,\dots,z^k}
-]
-
-cuyo tamaño es (k+1). El **kernel de Bergman** asociado es
-
-[
-K_k(z,w) \propto (1+z\bar w)^k,
-]
-
-y actúa como un mecanismo de "reproducción holomorfa": si multiplicamos una función por el kernel e integramos, recuperamos la función original.
-
-Geométricamente, podemos pensar que el kernel permite enfocar información local de manera estructurada, similar al rol que juega la transformada de Penrose en twistor theory.
-
----
-
-## 6. Proyección discreta: método de Nyström geométrico
-
-Elegimos puntos (Z_1,\dots,Z_S) en la variedad (configuraciones de estados coherentes). Construimos la matriz
-
-[
-D[:,j] = |Z_j\rangle
-]
-
-y su correlación
-
-[
-G = D^\dagger D.
-]
-
-Diagonalizar (G) revela direcciones principales de variación en el espacio generado por los estados coherentes. A partir de su descomposición espectral construimos vectores ortonormales
-
-[
-u_m = \frac{1}{\sqrt{\lambda_m}} D v_m,
-]
-
-y definimos la proyección
-
-[
+$$
 P = \sum_{m=1}^M |u_m\rangle\langle u_m|.
-]
+$$
 
-Desde un punto de vista geométrico, esta proyección identifica una subvariedad "efectiva" dentro del espacio de estados que captura la parte más relevante de la dinámica.
-
----
-
-## 7. Hamiltoniano efectivo y control del error
-
-Proyectamos el Hamiltoniano
-
-[
-H_{\text{eff}} = P H P.
-]
-
-Existen teoremas que aseguran que si (P) está bien elegido, los errores espectrales y dinámicos son pequeños. Por ejemplo,
-
-[
-\mathrm{dist}(\mu,\mathrm{spec}(H)) \le |(I-P)HP|
-]
-
-y el teorema de Davis–Kahan controla la desviación entre subespacios propios.
-
-Esto garantiza que el sistema reducido conserva las propiedades físicas esenciales.
+Físicamente, esto equivale a filtrar el espacio de Hilbert, conservando solo los componentes más relevantes para la dinámica de baja energía.
 
 ---
 
-## 8. Evolución temporal proyectada
+## 3. Hamiltoniano Efectivo y Evolución Temporal
 
-Comparando la evolución exacta y la proyectada,
+El Hamiltoniano se proyecta sobre este subespacio:
 
-[
-\psi(t)=e^{-iHt}\psi_0, \qquad \tilde\psi(t)=Pe^{-iH_{\text{eff}}t}P\psi_0,
-]
+$$
+H_{\mathrm{eff}} = P H P,
+$$
 
-se pueden obtener cotas explícitas del error, que crece controladamente si la proyección es adecuada.
+y la evolución temporal se aproxima mediante
 
----
+$$
+|\tilde\psi(t)\rangle = P e^{-i H_{\mathrm{eff}} t} P |\psi_0\rangle.
+$$
 
-## 9. Topología del espacio de estados y conexión de Berry
+Este procedimiento permite simular la dinámica de sistemas grandes con un costo computacional mucho menor, mientras se controla el error
 
-El espacio proyectivo cuántico (\mathbb{P}(H)) es geométricamente (\mathbb{C}P^{d-1}). La conexión de Berry
+$$
+\|\psi(t) - \tilde\psi(t)\| \le \mathcal{O}(\|(I-P) H P\| t),
+$$
 
-[
-A = i\langle \psi, d\psi \rangle
-]
-
-y su curvatura
-
-[
-F = dA,
-]
-
-coinciden con la métrica de Fubini–Study. Esto muestra que las fases cuánticas son fenómenos topológicos asociados al fibrado tautológico.
+garantizando que la proyección conserva la mayor parte de la información física relevante.
 
 ---
 
-## 10. Interpretación para el modelo de Ising
+## 4. Flujo de Ricci y Tiempo Geométrico
 
-En el método presentado:
+Se introduce un parámetro $$\beta$$ que actúa como **tiempo imaginario** para guiar la proyección hacia estados de baja energía:
 
-* Los estados coherentes parametrizan configuraciones de spin de forma holomorfa.
-* El kernel de Bergman refleja simetrías (SU(2)).
-* La proyección (P) realiza una reducción twistorial sobre (2^N) dimensiones.
-* La interpretación fibrada permite usar herramientas de geometría Kähler y curvatura.
-* La reducción holomorfa es especialmente útil cuando el entrelazamiento es bajo o la evolución es corta.
-
-Así, el modelo de Ising puede entenderse como una dinámica sobre secciones holomorfas de un fibrado complejo, lo cual abre la puerta a formulaciones twistoriales, cuantización geométrica y enfoques no conmutativos dentro de un marco computacional eficiente.
-
-
-# 2. Flujo de Ricci: Interpretación Geométrica y Cuántica
-
-Este apartado reescribe tu explicación original, pero de manera **más pedagógica**, **geométrica** y **física**, resaltando la intuición detrás del flujo de Ricci aplicado a un sistema cuántico como el modelo de Ising.
-
----
-
-# 2.1. La Fidelidad como Medida de Alineamiento Geométrico
-
-La fidelidad
-[
-\mathcal{F} = \big| \langle \psi_0 \mid P P^H \mid \psi_0 \rangle \big|^2
-]
-cuantifica **qué tan bien** el estado inicial (\psi_0) está contenido dentro del subespacio de dimensión reducida (M) generado por el flujo.
-
-### Intuición geométrica
-
-Piense en (\psi_0) como un punto en un espacio Hilbert de dimensión enorme, y en (M) como una **subvariedad curva** que intenta describir solo la parte físicamente relevante del sistema (baja energía). La fidelidad responde:
-
-> **¿Qué tan cerca está el punto (\psi_0) de esa subvariedad?**
-
-* Si (\mathcal{F} \approx 1): la subvariedad (M) captura muy bien a (\psi_0).
-* Si (\mathcal{F} \approx 0): (M) está mal orientada o describe otra región del espacio.
-
-### Objetos principales
-
-* (\psi_0 = |00\cdots 0\rangle): estado inicial de referencia.
-* (P): matriz cuyas columnas son una base ortonormal del subespacio (M).
-* (PP^H): operador proyector sobre ese subespacio.
-
-Pedagógicamente: **proyectar (\psi_0) sobre (M)**, medir su longitud, y elevarla al cuadrado.
-
----
-
-# 2.2. El Parámetro (\beta) como Tiempo Geométrico del Flujo
-
-El flujo de Ricci en geometría suaviza una métrica deformándola en el tiempo según su curvatura.
-
-En tu construcción, el parámetro (\beta) desempeña el papel de ese **tiempo geométrico**, o equivalentemente una **escala de resolución**.
-
-A cada (\beta), construimos un proyector (P(\beta)) mediante pesos
-[
+$$
 w_k(\beta) \propto \langle Z_k | e^{-\beta H} | Z_k \rangle.
-]
-Esto “viste” la métrica geométrica inicial con información dinámica.
+$$
 
-### Interpretación intuitiva:
+Para $$\beta = 0$$, todos los estados pesan igual; a medida que $$\beta$$ aumenta, la proyección privilegia los estados cercanos al estado fundamental, deformando el subespacio $$M$$ para alinearlo con la dinámica relevante. La **fidelidad**
 
-* (\beta = 0): vemos todo “borroso”, todas las regiones pesan igual.
-* Aumentar (\beta): el sistema comienza a preferir los estados próximos a la baja energía.
-* (\beta \to \infty): solo “sobreviven” los estados cercanos al estado fundamental.
+$$
+\mathcal{F}(\beta) = \big| \langle \psi_0 | P(\beta) P(\beta)^\dagger | \psi_0 \rangle \big|^2
+$$
 
-Pedagógicamente, **(\beta) es un zoom geométrico** que revela la estructura relevante del Hamiltoniano.
-
----
-
-# 2.3. Interpretación Geométrica de la Curva (\mathcal{F}(\beta))
-
-La gráfica de fidelidad contra (\beta) es un diagnóstico de **cómo el flujo adapta la geometría** del subespacio (M) para capturar la física de baja energía.
-
-Analicemos los tres regímenes.
-
-## 2.3.1. Régimen (\beta \approx 0): Geometría Desnuda
-
-Cuando (\beta \to 0):
-
-* (e^{-\beta H} \approx I)
-* todos los pesos son iguales
-* el flujo no sabe nada del espectro
-
-En geometría: es como tomar una variedad y medirla solo con su **métrica intrínseca inicial**, sin información extrínseca.
-
-Resultado físico:
-
-* (M) no está alineado con baja energía
-* (\mathcal{F}(0)) suele ser baja o moderada
-
-Es literalmente el “punto de partida” del flujo.
+cuantifica la calidad de esta alineación, y su evolución con $$\beta$$ proporciona información sobre la eficiencia del flujo en capturar la física infrarroja del sistema.
 
 ---
 
-## 2.3.2. Régimen de (\beta) Intermedio: Flujo Activo
+## 5. Análisis de Energía y Control de Error
 
-Aquí, el operador (e^{-\beta H}) empieza a discriminar estados según su energía.
+El Hamiltoniano proyectado permite calcular fácilmente el **promedio de energía** y su dispersión:
 
-En geometría, el flujo de Ricci comienza a “alisar” la métrica, eliminando detalles innecesarios y resaltando estructuras relevantes.
+$$
+\langle H \rangle_\beta = \langle \tilde\psi(\beta) | H | \tilde\psi(\beta)\rangle, \quad
+\Delta E_\beta^2 = \langle H^2 \rangle_\beta - \langle H \rangle_\beta^2.
+$$
 
-En tu construcción:
-
-* los pesos (w_k(\beta)) se hacen no uniformes
-* (M) se rota y deforma hacia la región del espacio dominada por baja energía
-* (\mathcal{F}(\beta)) aumenta rápidamente
-
-Este es el régimen donde el flujo **trabaja de verdad**, alineando tu subespacio con la física correcta.
+El comportamiento de $$\langle H \rangle_\beta$$ y $$\Delta E_\beta$$ permite evaluar la fidelidad de la proyección y asegurar que se capturan los modos más relevantes. Una dispersión pequeña indica que el subespacio reducido describe con precisión la física de baja energía.
 
 ---
 
-## 2.3.3. Régimen (\beta \to \infty): Geometría Vestida por Baja Energía
+## 6. Métodos Computacionales
 
-Cuando (\beta) es grande:
+Para implementar la evolución temporal de manera eficiente se utilizan técnicas numéricas avanzadas:
 
-* el operador exponencial actúa como una proyección hacia el estado fundamental
-* el subespacio (M) converge al sector de baja energía del Hamiltoniano
+**Polinomios de Chebyshev:** Permiten aproximar la acción del operador exponencial $$e^{-i H t}$$ sin diagonalizar completamente el Hamiltoniano. La expansión en Chebyshev
 
-Geométricamente: el flujo de Ricci evoluciona hacia una métrica canónica asociada a la estructura fundamental del sistema (análoga a llegar a una métrica Einstein en geometría pura).
+$$
+e^{-i H t} \approx \sum_{n=0}^{N_c} a_n(t) T_n(H')
+$$
 
-Resultado:
+reduce el costo computacional y mantiene alta precisión, donde $$T_n$$ son los polinomios de Chebyshev y $$H'$$ es el Hamiltoniano escalado.
 
-* (\mathcal{F}(\beta)) se estabiliza
-* (M) ya describe con precisión la física infrarroja
+**Diagonalización parcial:** Para obtener los vectores principales de $$G$$ se realiza diagonalización parcial usando algoritmos iterativos, que permiten trabajar con matrices de gran tamaño de forma eficiente.
 
-Si (\psi_0) tiene componente en baja energía, entonces (\mathcal{F}(\beta) \to 1).
+**Proyección discreta y métodos tipo Nyström:** La selección de puntos $$Z_j$$ y la construcción de $$G$$ se hace mediante muestreo inteligente, evitando recorrer todo el espacio de estados. Esto permite construir el subespacio $$M$$ de manera rápida y estable.
 
 ---
 
-# 2.4. Lectura Física Final
+## 7. Interpretación Física
 
-La curva (\mathcal{F}(\beta)) responde a la pregunta central:
+Este enfoque combina física y computación: los estados coherentes parametrizan configuraciones de spin de forma continua, la proyección $$P$$ identifica los modos más relevantes de la dinámica y la evolución proyectada captura la dinámica de baja energía, incluyendo correlaciones importantes. El flujo de Ricci y el parámetro $$\beta$$ actúan como un mecanismo de filtrado cuántico, mientras que el análisis de energía y dispersión proporciona un control explícito del error. En términos intuitivos, la geometría del subespacio “aprende” la física del Hamiltoniano, concentrando la información relevante en un espacio reducido, mucho más fácil de manejar numéricamente.
 
-> **¿Qué tan rápido y qué tan eficientemente la geometría del subespacio se adapta para capturar la física relevante del Hamiltoniano?**
+---
 
-Una subida abrupta significa:
+## 8. Conclusión
 
-* la dinámica hamiltoniana guía bien la geometría
-* el flujo detecta la estructura infrarroja
-* el submanifold (M) converge a la región que realmente importa
-
-En términos más intuitivos: **la geometría aprende la física**.
+El método presentado permite simular sistemas de Ising grandes mediante representaciones continuas de estados coherentes, construcción de subespacios relevantes mediante proyección holomorfa, evolución temporal proyectada usando polinomios de Chebyshev y diagonalización parcial, y control de errores mediante análisis de energía y fidelidad. El resultado es un marco físico-cuántico y computacionalmente eficiente, que proporciona una visión clara de cómo emergen las propiedades de baja energía dentro de un espacio de Hilbert enorme.

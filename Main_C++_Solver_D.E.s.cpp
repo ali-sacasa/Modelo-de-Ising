@@ -1,86 +1,254 @@
 #include "hpp_Solver_D.E.s.hpp"
 #include <iostream>
 #include <vector>
+#include <complex>
+#include <string>
+#include <cmath>
 #include <chrono>
 
 int main() {
-    std::cout << "C++ - MODELO ISING " << std::endl;
+    using namespace std::chrono;
+    auto start_time = high_resolution_clock::now();
     
-    // Configuración del sistema
+
     SystemConfig config;
-    config.N = 6;
+    config.N = 8;
     config.J = 1.0;
-    config.h = 0.5;
-    config.S = 100;
-    config.M_trunc = 20;
-    config.T = 5.0;
-    config.nt = 50;
+    config.h = 0.8;
+    config.S = 200;       // Reducido para velocidad
+    config.M_trunc = 30;
+    config.T = 4.0;
+    config.nt = 81;
+    config.generate_time_list();
+    config.BETA_MAX = 3.0;
+    config.n_beta = 10;
     
-    auto start_time = std::chrono::high_resolution_clock::now();
+    config.print_config();
+
+    std::cout << "\n=== Construyendo Hamiltoniano .\n";
+    auto H_components = QuantumOperators::build_ising_hamiltonian_components(
+        config.N, config.J, config.h, config.periodic);
+    SparseMatrixXcd H_ZZ = H_components.first;
+    SparseMatrixXcd H_X = H_components.second;
+    SparseMatrixXcd H_total = H_ZZ + H_X;
     
-    try {
-        // Crear solver
-        QuantumIsingSolver solver(config);
-        
-        // Construir Hamiltoniano
-        solver.buildIsingHamiltonian();
-        
-        // Muestrear estados coherentes
-        MatrixXc Data = solver.buildCoherentVectors();
-        
-        // Construir proyección
-        solver.buildProjection(Data);
-        
-        // Estado inicial |00...0⟩
-        int dim = solver.getDimension();
-        VectorXc psi0(dim, 0.0);
-        psi0[0] = 1.0;
-        
-        // Tiempos de evolución
-        std::vector<double> t_list(config.nt);
-        for (int i = 0; i < config.nt; ++i) {
-            t_list[i] = i * config.T / (config.nt - 1);
-        }
-        
-        // Evolución temporal
-        auto states = solver.timeEvolution(psi0, t_list);
-        
-        // Calcular magnetización
-        std::vector<double> magnetization(t_list.size());
-        for (size_t i = 0; i < t_list.size(); ++i) {
-            magnetization[i] = solver.computeMagnetization(states[i][0]);
-        }
-        
-        auto end_time = std::chrono::high_resolution_clock::now();
-        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
-        
-        // Guardar resultados
-        Visualizer::saveVector(t_list, "tiempos.csv");
-        Visualizer::saveVector(magnetization, "magnetizacion.csv");
-        
-        // Resultados
-        std::cout << "\n=== RESULTADOS ===" << std::endl;
-        std::cout << "Tiempo de ejecución: " << duration.count() << " ms" << std::endl;
-        std::cout << "Dimensión del sistema: " << dim << std::endl;
-        std::cout << "Puntos temporales: " << t_list.size() << std::endl;
-        
-        std::cout << "\nMagnetización en diferentes tiempos:" << std::endl;
-        std::cout << "t=0: " << magnetization[0] << std::endl;
-        std::cout << "t=" << t_list[t_list.size()/2] << ": " << magnetization[t_list.size()/2] << std::endl;
-        std::cout << "t=" << t_list.back() << ": " << magnetization.back() << std::endl;
-        
-        std::cout << "\nDatos guardados en:" << std::endl;
-        std::cout << "- tiempos.csv" << std::endl;
-        std::cout << "- magnetizacion.csv" << std::endl;
-        
-    } catch (const std::exception& e) {
-        std::cerr << "Error: " << e.what() << std::endl;
-        return 1;
+    int dim = 1 << config.N;
+    std::cout << "Dimensión del espacio: " << dim << std::endl;
+    // Estado inicial |psi0>
+    VectorXcd psi0 = VectorXcd::Zero(dim);
+    psi0(0) = 1.0;
+
+    std::cout << "\nMuestreando estados coherentes del sistema\n";
+    std::vector<Complex> z_list = CoherentStates::sample_cp1_fibonacci(config.S);
+    MatrixXcd Data = CoherentStates::build_product_coherent_vectors(config.N, z_list);
+    
+    //  Optimización con Flujo de Ricci
+
+    std::cout << "\nOptimizando con Flujo de Ricci\n";
+    
+    RicciFlow ricci_flow(config);
+    std::vector<double> beta_list(config.n_beta);
+    double db = config.BETA_MAX / (config.n_beta - 1);
+    for (int i = 0; i < config.n_beta; ++i) {
+        beta_list[i] = 0.01 + i * db;  // Comenzar en 0.01, puede cambiarse.
     }
     
-    std::cout << "\n Simulación completada" << std::endl;
-    return 0;
-}
+    auto ricci_results = ricci_flow.optimize_projection(H_total, psi0, Data, beta_list);
+    
+    std::cout << "\nMejor beta encontrado: " << ricci_results.best_beta << std::endl;
+    std::cout << "Fidelidad óptima: " << ricci_results.best_fidelity << std::endl;
+    std::cout << "Dimensión efectiva: " << ricci_results.best_P.cols() 
+              << "/" << dim << " (" 
+              << 100.0 * ricci_results.best_P.cols() / dim << "%)" << std::endl;
+    
+    // Guardar resultados del flujo de Ricci
+    CSVExporter::save_vector_csv(ricci_results.beta_list, "ricci_beta_list.csv", "beta");
+    CSVExporter::save_vector_csv(ricci_results.fidelities, "ricci_fidelities.csv", "fidelity");
+    
 
-/* Posible forma para correr: g++ -std=c++17 -O3 -I. Main_C++_Solver_D.E.s.cpp Cpp_Solver_D.E.s.cpp -o quantum_solver
-./quantum_solver*/
+    std::cout << "\n=== Evolución temporal con polinomios Chebyshev \n";
+    
+    auto evolution_results = ChebyshevPropagator::project_and_evolve(
+        H_total, ricci_results.best_P, psi0, config.t_list, config.cheb_order);
+    
+    MatrixXcd states_proj = evolution_results.first;
+    MatrixXcd states_full = evolution_results.second;
+    
+ 
+    std::cout << "\n Calculando energías\n";
+    
+    // Energía total
+    std::vector<double> energies_full = EnergyAnalyzer::compute_energy_evolution(states_full, H_total);
+    std::vector<double> energies_proj = EnergyAnalyzer::compute_energy_evolution(states_proj, H_total);
+    
+    // Componentes de energía
+    auto energy_components_full = EnergyAnalyzer::compute_energy_components_evolution(
+        states_full, H_ZZ, H_X);
+    auto energy_components_proj = EnergyAnalyzer::compute_energy_components_evolution(
+        states_proj, H_ZZ, H_X);
+    
+    std::vector<double> E_ZZ_full = energy_components_full.first;
+    std::vector<double> E_X_full = energy_components_full.second;
+    std::vector<double> E_ZZ_proj = energy_components_proj.first;
+    std::vector<double> E_X_proj = energy_components_proj.second;
+    
+// Cálculo de la magnetización
+    std::cout << "\n=== Calculando magnetización ===\n";
+    
+    SparseMatrixXcd Sz_total = QuantumOperators::build_Sz_total(config.N);
+    MatrixXcd Sz_dense = MatrixXcd(Sz_total);
+    
+    std::vector<double> magnetization_full(config.nt, 0.0);
+    std::vector<double> magnetization_proj(config.nt, 0.0);
+    
+    for (int i = 0; i < config.nt; ++i) {
+        VectorXcd state_full = states_full.col(i);
+        VectorXcd state_proj = states_proj.col(i);
+        
+        Complex mag_full = state_full.adjoint() * (Sz_dense * state_full);
+        Complex mag_proj = state_proj.adjoint() * (Sz_dense * state_proj);
+        
+        magnetization_full[i] = mag_full.real() / config.N;
+        magnetization_proj[i] = mag_proj.real() / config.N;
+    }
+    
+    // Densidad de energía local
+    
+    auto h_local_list = QuantumOperators::build_local_energy_operators(
+        config.N, config.J, config.h, config.periodic);
+    
+    MatrixXd local_energy_full = EnergyAnalyzer::compute_local_energy_density(
+        states_full, h_local_list);
+    MatrixXd local_energy_proj = EnergyAnalyzer::compute_local_energy_density(
+        states_proj, h_local_list);
+    
+    //  Varianza de energía
+    std::cout << "\nCalculando varianza de energía\n";
+    
+    std::vector<double> variance_full = EnergyAnalyzer::compute_energy_variance(states_full, H_total);
+    std::vector<double> variance_proj = EnergyAnalyzer::compute_energy_variance(states_proj, H_total);
+    
+
+    std::cout << "\n Guardando resultados en archivos CSV\n";
+    
+    // Configuración
+    std::ofstream config_file("config.csv");
+    config_file << "parameter,value\n";
+    config_file << "N," << config.N << "\n";
+    config_file << "J," << config.J << "\n";
+    config_file << "h," << config.h << "\n";
+    config_file << "S," << config.S << "\n";
+    config_file << "M_trunc," << config.M_trunc << "\n";
+    config_file << "T," << config.T << "\n";
+    config_file << "nt," << config.nt << "\n";
+    config_file << "best_beta," << ricci_results.best_beta << "\n";
+    config_file << "best_fidelity," << ricci_results.best_fidelity << "\n";
+    config_file.close();
+    
+    // Tiempos
+    CSVExporter::save_vector_csv(config.t_list, "time.csv", "time");
+    
+    // Energías
+    CSVExporter::save_energy_results_csv(
+        config.t_list, energies_full, energies_proj,
+        E_ZZ_full, E_X_full, E_ZZ_proj, E_X_proj,
+        "energy_results.csv");
+    
+    // Magnetización
+    CSVExporter::save_magnetization_csv(
+        config.t_list, magnetization_full, magnetization_proj,
+        "magnetization.csv");
+    
+    // Varianza
+    std::ofstream variance_file("variance.csv");
+    variance_file << "time,variance_full,variance_proj\n";
+    for (int i = 0; i < config.nt; ++i) {
+        variance_file << config.t_list[i] << ","
+                      << variance_full[i] << ","
+                      << variance_proj[i] << "\n";
+    }
+    variance_file.close();
+    
+    // Densidad de energía local
+    CSVExporter::save_matrix_csv(local_energy_full, "local_energy_full.csv");
+    CSVExporter::save_matrix_csv(local_energy_proj, "local_energy_proj.csv");
+    
+    // Estados (primeros 5 estados base para visualización)
+    int max_basis = std::min(5, dim);
+    MatrixXcd states_full_subset = states_full.topRows(max_basis).transpose();
+    MatrixXcd states_proj_subset = states_proj.topRows(max_basis).transpose();
+    
+    CSVExporter::save_complex_matrix_csv(states_full_subset, "states_full_amplitudes.csv");
+    CSVExporter::save_complex_matrix_csv(states_proj_subset, "states_proj_amplitudes.csv");
+    
+    // Rendimiento y error
+
+    std::cout << "\n=== Métricas de error ===\n";
+    
+    // Error en energía
+    double max_energy_error = 0.0;
+    double mean_energy_error = 0.0;
+    for (int i = 0; i < config.nt; ++i) {
+        double error = std::abs(energies_full[i] - energies_proj[i]);
+        max_energy_error = std::max(max_energy_error, error);
+        mean_energy_error += error;
+    }
+    mean_energy_error /= config.nt;
+    
+    // Error en magnetización
+    double max_mag_error = 0.0;
+    for (int i = 0; i < config.nt; ++i) {
+        double error = std::abs(magnetization_full[i] - magnetization_proj[i]);
+        max_mag_error = std::max(max_mag_error, error);
+    }
+    
+    // Fidelidad durante la evolución
+    std::vector<double> fidelity_evolution(config.nt, 0.0);
+    for (int i = 0; i < config.nt; ++i) {
+        VectorXcd state_full = states_full.col(i);
+        VectorXcd state_proj = states_proj.col(i);
+        Complex overlap = state_proj.dot(state_full);
+        fidelity_evolution[i] = std::norm(overlap);
+    }
+    
+    CSVExporter::save_vector_csv(fidelity_evolution, "fidelity_evolution.csv", "fidelity");
+    
+    // Guardar métricas
+    std::ofstream metrics_file("metrics.csv");
+    metrics_file << "metric,value\n";
+    metrics_file << "max_energy_error," << max_energy_error << "\n";
+    metrics_file << "mean_energy_error," << mean_energy_error << "\n";
+    metrics_file << "max_magnetization_error," << max_mag_error << "\n";
+    metrics_file << "initial_fidelity," << ricci_results.best_fidelity << "\n";
+    metrics_file << "average_fidelity," 
+                 << std::accumulate(fidelity_evolution.begin(), fidelity_evolution.end(), 0.0) / config.nt 
+                 << "\n";
+    metrics_file.close();
+    
+    // 13. Resumen y tiempo de ejecución
+
+    auto end_time = high_resolution_clock::now();
+    auto duration = duration_cast<milliseconds>(end_time - start_time);
+    
+    std::cout << "\n=== PROCESO COMPLETADO ===\n";
+    std::cout << "Tiempo de ejecución: " << duration.count() / 1000.0 << " segundos\n";
+    std::cout << "\nArchivos CSV generados:\n";
+    std::cout << "  - config.csv: Configuración del sistema\n";
+    std::cout << "  - time.csv: Lista de tiempos\n";
+    std::cout << "  - energy_results.csv: Resultados de energía\n";
+    std::cout << "  - magnetization.csv: Magnetización\n";
+    std::cout << "  - variance.csv: Varianza de energía\n";
+    std::cout << "  - local_energy_full.csv: Densidad de energía local (completo)\n";
+    std::cout << "  - local_energy_proj.csv: Densidad de energía local (proyectado)\n";
+    std::cout << "  - states_full_amplitudes.csv: Amplitudes de estados (completo)\n";
+    std::cout << "  - states_proj_amplitudes.csv: Amplitudes de estados (proyectado)\n";
+    std::cout << "  - fidelity_evolution.csv: Fidelidad durante la evolución\n";
+    std::cout << "  - metrics.csv: Métricas de error\n";
+    std::cout << "  - ricci_beta_list.csv: Valores de beta probados\n";
+    std::cout << "  - ricci_fidelities.csv: Fidelidades correspondientes\n";
+    std::cout << "Procesado finalizado, gracias.\n";
+    
+    return 0;
+}   
+
+// fin del Main_C++_Solver_D.E.s.cpp
