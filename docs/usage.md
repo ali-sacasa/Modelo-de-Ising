@@ -1,36 +1,37 @@
 # Uso del proyecto
 
-## 1. Ejecutar la simulación y graficar
-Desde el directorio principal del repositorio:
-```bash
-cd solver_C++
-./run_solver.sh
-```
-El script:
-1. Compila el binario `quantum_solver` en `outputs/`.
-2. Ejecuta la simulación y guarda `outputs/tiempos.csv` y `outputs/magnetizacion.csv`.
-3. Llama a `plot_results.py` para generar y mostrar la gráfica, guardándola como `outputs/magnetizacion.png`.
+## 1. Ejecutar la versión en Python 
+1) Abrir `Solver_D.E.s.ipynb` en Jupyter.
+2) Ejecutar todas las celdas: se construye el Hamiltoniano, se optimiza la proyección con flujo de Ricci, se propaga con polinomios de Chebyshev y se grafican energía, magnetización y fidelidad.
+3) Ajustar parámetros como `N`, `J`, `h`, `S`, `M_trunc`, `T`, `nt` en las celdas de configuración para nuevos experimentos.
 
-Para cambiar el directorio de salida:
-```bash
-./run_solver.sh otra_carpeta
-```
 
-Para guardar la figura sin abrir una ventana gráfica:
+## 2. Para compilar y ejecutar la versión en C++
+Ejemplo de compilación desde el root del repositorio:
 ```bash
-python3 plot_results.py --data-dir outputs --no-show
+g++ -std=c++17 -O2 \
+  -I/usr/include/eigen3 \
+  Main_C++_Solver_D.E.s.cpp Cpp_Solver_D.E.s.cpp -o quantum_solver
+./quantum_solver
 ```
+El ejecutable crea los siguientes archivos CSV en el directorio actual:
+- `config.csv`, `time.csv`
+- `energy_results.csv`
+- `magnetization.csv`
+- `variance.csv`
+- `local_energy_full.csv`, `local_energy_proj.csv`
+- `states_full_amplitudes.csv`, `states_proj_amplitudes.csv`
+- `fidelity_evolution.csv`, `metrics.csv`
+- `ricci_beta_list.csv`, `ricci_fidelities.csv`
 
-## 2. Servir la documentación con MkDocs
-Instala MkDocs (si no lo tienes):
-```bash
-python3 -m pip install mkdocs
-```
-Luego levanta el sitio:
-```bash
-mkdocs serve
-```
-Abre el navegador en la URL indicada (por defecto `http://127.0.0.1:8000`). Para generar la versión estática:
-```bash
-mkdocs build
-```
+## 3. Ajustar parámetros físicos y numéricos
+Para ajustar parámetros, se puede editar `Main_C++_Solver_D.E.s.cpp` antes de compilar. En la sección de configuración (`SystemConfig config;`) se puede modificar:
+- `N`, `J`, `h`, `periodic` para definir el modelo de Ising transversal.
+- `S` para el número de estados coherentes y `M_trunc` para dimensión máxima del subespacio proyectado.
+- `T`, `nt` y `cheb_order` para la evolución temporal con polinomios de Chebyshev.
+- `BETA_MAX` y `n_beta` para la exploración del flujo de Ricci, los pesos térmicos.
+
+## 4. Analizar resultados con notebooks
+- `análisis_datos_generados_en_c++.ipynb` carga los CSV generados y produce gráficas de energía y magnetización.
+- `modelo_analítico.ipynb` contiene referencias analíticas para comparar resultados.
+
