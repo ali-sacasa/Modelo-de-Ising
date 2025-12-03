@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+        <title>Enfoque de resolución propuesto - Modelo de Ising</title>
+        <link href="../../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../../css/brands.min.css" rel="stylesheet">
+        <link href="../../css/solid.min.css" rel="stylesheet">
+        <link href="../../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="../..">Modelo de Ising</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href="../.." class="nav-link">Inicio</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../usage/" class="nav-link">Uso</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle active" aria-current="page" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Teoría</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../Modelo_de_ising/" class="dropdown-item">Modelo de Ising</a>
+</li>
+                                    
+<li>
+    <a href="./" class="dropdown-item active" aria-current="page">Enfoque de resolución propuesto</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Código</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../C%C3%B3digo/M%C3%B3dulos_Python/" class="dropdown-item">Módulos en Python</a>
+</li>
+                                    
+<li>
+    <a href="../../C%C3%B3digo/M%C3%B3dulos_C%2B%2B/" class="dropdown-item">Módulos en C++</a>
+</li>
+                                    
+<li>
+    <a href="../../C%C3%B3digo/Implementaci%C3%B3n_paralelizada_Python/" class="dropdown-item">Implementación Paralelizada en Python</a>
+</li>
+                                    
+<li>
+    <a href="../../C%C3%B3digo/Implementaci%C3%B3n_paralelizada_C%2B%2B/" class="dropdown-item">Implementación Paralelizada en C++</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"  aria-expanded="false">Resultados, discusión y conclusiones</a>
+                                <ul class="dropdown-menu">
+                                    
+<li>
+    <a href="../../Resultados%2C%20discusi%C3%B3n%20y%20conclusiones/Resultados/" class="dropdown-item">Resultados</a>
+</li>
+                                    
+<li>
+    <a href="../../Resultados%2C%20discusi%C3%B3n%20y%20conclusiones/Discusion/" class="dropdown-item">Discusión</a>
+</li>
+                                    
+<li>
+    <a href="../../Resultados%2C%20discusi%C3%B3n%20y%20conclusiones/Conclusiones/" class="dropdown-item">Conclusiones</a>
+</li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../../Referencias/referencias/" class="nav-link">Referencias</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../Modelo_de_ising/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../../C%C3%B3digo/M%C3%B3dulos_Python/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="https://github.com/ali-sacasa/Modelo-de-Ising/edit/master/docs/Teoría/Enfoque_de_resolución_propuesto.md" class="nav-link"><i class="fa-brands fa-github"></i> Edit on GitHub</a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#resolucion-del-modelo-de-ising-mediante-proyeccion-holomorfa-y-tecnicas-numericas" class="nav-link">Resolución del Modelo de Ising mediante Proyección Holomorfa y Técnicas Numéricas</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#1-espacio-de-hilbert-y-motivacion" class="nav-link">1. Espacio de Hilbert y motivación</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#2-proyeccion-holomorfa-y-subespacios-relevantes" class="nav-link">2. Proyección Holomorfa y Subespacios Relevantes</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#3-hamiltoniano-efectivo-y-evolucion-temporal" class="nav-link">3. Hamiltoniano Efectivo y Evolución Temporal</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#4-flujo-de-ricci-y-tiempo-geometrico" class="nav-link">4. Flujo de Ricci y Tiempo Geométrico</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#5-analisis-de-energia-y-control-de-error" class="nav-link">5. Análisis de Energía y Control de Error</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#6-metodos-computacionales" class="nav-link">6. Métodos Computacionales</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#7-significado-fisico" class="nav-link">7. Significado físico</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="resolucion-del-modelo-de-ising-mediante-proyeccion-holomorfa-y-tecnicas-numericas">Resolución del Modelo de Ising mediante Proyección Holomorfa y Técnicas Numéricas<a class="headerlink" href="#resolucion-del-modelo-de-ising-mediante-proyeccion-holomorfa-y-tecnicas-numericas" title="Permanent link">&para;</a></h1>
+<h2 id="1-espacio-de-hilbert-y-motivacion">1. Espacio de Hilbert y motivación<a class="headerlink" href="#1-espacio-de-hilbert-y-motivacion" title="Permanent link">&para;</a></h2>
+<p>Para <span class="arithmatex">\(N\)</span> espines, el espacio de Hilbert es:</p>
+<div class="arithmatex">\[
+\mathcal{H} = (\mathbb{C}^2)^{\otimes N}, \quad \dim \mathcal{H} = 2^N,
+\]</div>
+<p>Por lo que crece exponencialmente con <span class="arithmatex">\(N\)</span>. Se proyecta la dinámica sobre un subespacio más pequeño que capture los modos de baja energía o los estados de alta fidelidad con la configuración inicial. Cada espín se representa con un estado coherente sobre <span class="arithmatex">\(\mathbb{C}P^1\)</span>:</p>
+<div class="arithmatex">\[
+|z\rangle = \frac{1}{\sqrt{1+|z|^2}}
+\begin{pmatrix} 1 \\ z \end{pmatrix},
+\]</div>
+<p>Para <span class="arithmatex">\(N\)</span> espines se usa el producto tensorial <span class="arithmatex">\(|Z\rangle = \bigotimes_{i=1}^N |z_i\rangle\)</span>.</p>
+<hr />
+<h2 id="2-proyeccion-holomorfa-y-subespacios-relevantes">2. Proyección Holomorfa y Subespacios Relevantes<a class="headerlink" href="#2-proyeccion-holomorfa-y-subespacios-relevantes" title="Permanent link">&para;</a></h2>
+<p>Se construye una matriz de correlación a partir de configuraciones <span class="arithmatex">\(\{Z_j\}\)</span>:</p>
+<div class="arithmatex">\[
+D[:,j] = |Z_j\rangle, \quad G = D^\dagger D.
+\]</div>
+<p>La diagonalización de <span class="arithmatex">\(G\)</span> permite hallar las direcciones principales. Los autovectores asociados a los mayores autovalores forman una base ortonormal del subespacio de dimensión reducida <span class="arithmatex">\(M\)</span>, con proyector:</p>
+<div class="arithmatex">\[
+P = \sum_{m=1}^M |u_m\rangle\langle u_m|.
+\]</div>
+<p>Físicamente se está filtrando el espacio de Hilbert, conservando solo los componentes relevantes para la dinámica de baja energía.</p>
+<hr />
+<h2 id="3-hamiltoniano-efectivo-y-evolucion-temporal">3. Hamiltoniano Efectivo y Evolución Temporal<a class="headerlink" href="#3-hamiltoniano-efectivo-y-evolucion-temporal" title="Permanent link">&para;</a></h2>
+<p>El Hamiltoniano se proyecta:</p>
+<div class="arithmatex">\[
+H_{\mathrm{eff}} = P H P,
+\]</div>
+<p>De modo que la evolución aproximada es:</p>
+<div class="arithmatex">\[
+|\tilde\psi(t)\rangle = P e^{-i H_{\mathrm{eff}} t} P |\psi_0\rangle.
+\]</div>
+<p>Se controla el error mediante:</p>
+<div class="arithmatex">\[
+\|\psi(t) - \tilde\psi(t)\| \le \mathcal{O}(\|(I-P) H P\| t),
+\]</div>
+<p>Entonces, se asegura que la proyección conserva la mayor parte de la información física relevante.</p>
+<hr />
+<h2 id="4-flujo-de-ricci-y-tiempo-geometrico">4. Flujo de Ricci y Tiempo Geométrico<a class="headerlink" href="#4-flujo-de-ricci-y-tiempo-geometrico" title="Permanent link">&para;</a></h2>
+<p>Se introduce un parámetro <span class="arithmatex">\(\beta\)</span> como tiempo imaginario que favorece los estados de baja energía:</p>
+<div class="arithmatex">\[
+w_k(\beta) \propto \langle Z_k | e^{-\beta H} | Z_k \rangle.
+\]</div>
+<p>Para <span class="arithmatex">\(\beta = 0\)</span> todos los estados pesan igual. Al aumentar <span class="arithmatex">\(\beta\)</span>, la proyección favorece configuraciones cercanas al estado fundamental. La fidelidad se evalúa mediante:</p>
+<div class="arithmatex">\[
+\mathcal{F}(\beta) = \big| \langle \psi_0 | P(\beta) P(\beta)^\dagger | \psi_0 \rangle \big|^2
+\]</div>
+<hr />
+<h2 id="5-analisis-de-energia-y-control-de-error">5. Análisis de Energía y Control de Error<a class="headerlink" href="#5-analisis-de-energia-y-control-de-error" title="Permanent link">&para;</a></h2>
+<p>El Hamiltoniano proyectado permite calcular energía** y dispersión según:</p>
+<div class="arithmatex">\[
+\langle H \rangle_\beta = \langle \tilde\psi(\beta) | H | \tilde\psi(\beta)\rangle, \quad
+\Delta E_\beta^2 = \langle H^2 \rangle_\beta - \langle H \rangle_\beta^2.
+\]</div>
+<p>Una dispersión pequeña indica que el subespacio reducido describe con precisión la física de baja energía.</p>
+<hr />
+<h2 id="6-metodos-computacionales">6. Métodos Computacionales<a class="headerlink" href="#6-metodos-computacionales" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Polinomios de Chebyshev:</strong> aproximan <span class="arithmatex">\(e^{-i H t}\)</span> sin diagonalizar completamente el Hamiltoniano.</li>
+<li><strong>Diagonalización parcial o SVD aleatoria:</strong> extrae vectores principales de <span class="arithmatex">\(G\)</span> de manera eficiente.</li>
+<li><strong>Muestreo tipo lattice de Fibonacci:</strong> elige puntos <span class="arithmatex">\(Z_j\)</span> bien distribuidos en la esfera de Bloch.</li>
+<li><strong>Ponderación térmica:</strong> introduce pesos <span class="arithmatex">\(w_k(\beta)\)</span> para guiar el subespacio hacia la energía mínima.</li>
+</ul>
+<hr />
+<h2 id="7-significado-fisico">7. Significado físico<a class="headerlink" href="#7-significado-fisico" title="Permanent link">&para;</a></h2>
+<p>Los estados coherentes parametrizan configuraciones de spin de forma continua. El proyector <span class="arithmatex">\(P\)</span> identifica los modos más relevantes y la evolución proyectada captura la dinámica de baja energía. El flujo de Ricci actúa como filtro cuántico, mientras que el análisis de energía y fidelidad controla el error.</p>
+<p>En suma, el método empleado combina geometría (proyecciones holomórficas), técnicas numéricas y control energético (o de fidelidad) para simular sistemas de Ising grandes en un subespacio más manejable computacionalmente. Entonces, este permite estudiar correlaciones y magnetización con costo computacional reducido y un marco de error explícito.</p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "../..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../../js/base.js"></script>
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script src="../../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
