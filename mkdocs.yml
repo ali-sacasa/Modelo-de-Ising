@@ -50,13 +50,7 @@ nav:
   - Código:
     - Módulos en Python: Código/Módulos_Python.md
     - Módulos en C++: Código/Módulos_C++.md
-    - Implementación Paralelizada en Python: Código/Implementación_paralelizada_Python.md
     - Implementación Paralelizada en C++: Código/Implementación_paralelizada_C++.md
-
-  - Resultados, discusión y conclusiones:
-    - Resultados: Resultados, discusión y conclusiones/Resultados.md
-    - Discusión: Resultados, discusión y conclusiones/Discusion.md
-    - Conclusiones: Resultados, discusión y conclusiones/Conclusiones.md
 
   - Referencias: Referencias/referencias.md
     
