@@ -1,0 +1,6 @@
+metric,value
+max_energy_error,0.792021
+mean_energy_error,0.245421
+max_magnetization_error,0.134222
+initial_fidelity,1
+average_fidelity,0.019639
